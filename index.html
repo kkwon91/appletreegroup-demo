@@ -151,8 +151,8 @@ p{margin:0}
 /* 나무 */
 .tree{padding:112px 0}
 .tree-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:64px;margin-top:40px}
-.tree-pic{position:sticky;top:104px;align-self:start;height:min(70vh,560px)}
-.tree-pic svg{width:100%;height:100%}
+.tree-pic{position:sticky;top:96px;align-self:start;height:min(80vh,680px)}
+.tree-pic canvas{width:100%;height:100%;object-fit:contain;display:block;mix-blend-mode:multiply}
 .tree-pic path{fill:none;stroke-linecap:round;stroke-linejoin:round}
 .root{stroke:#8FA0AA;stroke-width:3}
 .trunk{stroke:var(--ink);stroke-width:7}
@@ -278,7 +278,6 @@ dialog.vd::backdrop{background:rgba(8,16,20,.86)}
 .quote .qsrc{margin-top:28px;color:#B8C7CF}
 
 /* 나무: 살랑임 */
-#trunk,#leaves,#fruits{transform-box:view-box;transform-origin:200px 360px;animation:sway 6s ease-in-out infinite alternate}
 @keyframes sway{from{transform:rotate(-1.1deg)}to{transform:rotate(1.1deg)}}
 .leaf,.fruit{transition:opacity .5s,transform .7s cubic-bezier(.2,1.8,.4,1)}
 .leaf.d{fill:#7DB02A}
@@ -311,8 +310,8 @@ details[open] p{animation:fadeup .35s ease}
 .job{padding-top:0;overflow:hidden}
 .mq{overflow:hidden;padding:56px 0 44px;border-bottom:1px solid #3A4A54;margin-bottom:80px}
 .mq-in{display:flex;width:max-content;animation:mq 30s linear infinite;font-size:clamp(56px,11vw,150px);font-weight:800;letter-spacing:-.04em;line-height:1.1;white-space:nowrap}
-.mq span{padding-right:.5em;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.5)}
-.mq span:nth-child(5n){color:var(--green);-webkit-text-stroke:0}
+.mq span{padding-right:.5em;color:#2B414D}
+.mq span:nth-child(5n){color:var(--green)}
 @keyframes mq{to{transform:translateX(-50%)}}
 
 @media (max-width:960px){
@@ -324,7 +323,7 @@ details[open] p{animation:fadeup .35s ease}
   .mapbox{min-height:600px}
   .list{grid-template-columns:1fr}.list li:nth-child(odd){border-right:0}
   .tree-grid{grid-template-columns:1fr;gap:24px}
-  .tree-pic{position:sticky;top:72px;height:240px;background:#fff;z-index:2;border-bottom:1px solid var(--line)}
+  .tree-pic{position:sticky;top:60px;height:300px;background:#fff;z-index:2;border-bottom:1px solid var(--line)}
   .stage{min-height:0;padding:28px 0}
   .hist-body{grid-template-columns:1fr;gap:16px}
   .two .wrap,.job .wrap{grid-template-columns:1fr;gap:56px}
@@ -355,7 +354,7 @@ details[open] p{animation:fadeup .35s ease}
   .job li{grid-template-columns:40px 1fr}.job li span{grid-column:2}
   .hist-list li{grid-template-columns:60px 1fr}
 }
-@media (prefers-reduced-motion:reduce){.land,.twig,.dot,.lens{transition:none}.ring.on{animation:none;opacity:1}.card.sw .ph img,.card.sw .tx{animation:none}html{scroll-behavior:auto}.leaf,.fruit{transition:none}#trunk,#leaves,#fruits,.mq-in,.hero-bg img{animation:none}.hero h1 .ln>span{animation:none;transform:none}.hero .lead,.hero-btns,.hero .facts{animation:none;opacity:1}.share .im{clip-path:none;transition:none}.share img{transform:none}.hist-list li,details[open] p{animation:none}}
+@media (prefers-reduced-motion:reduce){.land,.twig,.dot,.lens{transition:none}.ring.on{animation:none;opacity:1}.card.sw .ph img,.card.sw .tx{animation:none}html{scroll-behavior:auto}.leaf,.fruit{transition:none}.mq-in,.hero-bg img{animation:none}.hero h1 .ln>span{animation:none;transform:none}.hero .lead,.hero-btns,.hero .facts{animation:none;opacity:1}.share .im{clip-path:none;transition:none}.share img{transform:none}.hist-list li,details[open] p{animation:none}}
 </style>
 </head>
 <body>
@@ -451,38 +450,7 @@ details[open] p{animation:fadeup .35s ease}
     <h2>뿌리에서 열매까지, 사과나무가 자라는 순서</h2>
     <p class="sub">뿌리는 신뢰, 줄기는 함께 하는 공부, 열매는 나눔입니다. 화면을 내리면 나무가 그 순서로 자랍니다.</p>
     <div class="tree-grid">
-      <div class="tree-pic" aria-hidden="true">
-        <svg viewBox="0 0 400 520" id="treesvg">
-          <path class="ground" d="M20 360H380"/>
-          <g id="roots">
-            <path class="root" d="M200 360C200 400 170 420 130 450"/>
-            <path class="root" d="M200 360C205 410 235 430 285 455"/>
-            <path class="root" d="M200 360C198 420 200 460 196 500"/>
-            <path class="root" d="M168 418C150 420 120 415 96 428"/>
-            <path class="root" d="M236 426C262 424 300 420 322 432"/>
-          </g>
-          <g id="trunk">
-            <path class="trunk" d="M200 360C198 300 204 250 200 190"/>
-            <path class="bough" d="M200 270C170 250 140 235 108 200"/>
-            <path class="bough" d="M201 250C235 232 262 215 296 178"/>
-            <path class="bough" d="M200 200C180 165 165 135 150 96"/>
-            <path class="bough" d="M200 196C222 160 238 128 252 88"/>
-            <path class="bough" d="M200 190C200 150 200 110 200 60"/>
-          </g>
-          <g id="leaves">
-            <ellipse class="leaf" cx="104" cy="190" rx="34" ry="22"/><ellipse class="leaf" cx="300" cy="168" rx="36" ry="22"/>
-            <ellipse class="leaf" cx="146" cy="88" rx="32" ry="22"/><ellipse class="leaf" cx="256" cy="80" rx="32" ry="22"/>
-            <ellipse class="leaf" cx="200" cy="50" rx="34" ry="22"/><ellipse class="leaf" cx="160" cy="150" rx="26" ry="18"/>
-            <ellipse class="leaf" cx="244" cy="140" rx="26" ry="18"/>
-            <ellipse class="leaf d" cx="76" cy="168" rx="24" ry="16"/><ellipse class="leaf d" cx="330" cy="150" rx="24" ry="16"/><ellipse class="leaf d" cx="120" cy="120" rx="26" ry="17"/><ellipse class="leaf d" cx="286" cy="110" rx="26" ry="17"/><ellipse class="leaf d" cx="172" cy="56" rx="24" ry="16"/><ellipse class="leaf d" cx="230" cy="48" rx="24" ry="16"/><ellipse class="leaf" cx="200" cy="116" rx="28" ry="18"/><ellipse class="leaf d" cx="136" cy="224" rx="22" ry="14"/><ellipse class="leaf d" cx="268" cy="212" rx="22" ry="14"/>
-          </g>
-          <g id="fruits">
-            <circle class="fruit" cx="120" cy="214" r="11"/><circle class="fruit" cx="284" cy="196" r="11"/>
-            <circle class="fruit" cx="166" cy="112" r="11"/><circle class="fruit" cx="238" cy="104" r="11"/>
-            <circle class="fruit" cx="200" cy="80" r="11"/><circle class="fruit" cx="222" cy="170" r="11"/>
-          </g>
-        </svg>
-      </div>
+      <div class="tree-pic"><canvas id="treecv" width="660" height="880" role="img" aria-label="새싹에서 뿌리가 뻗고, 줄기와 잎이 자라고, 사과가 열리는 나무"></canvas></div>
       <div>
         <article class="stage" data-stage="0">
           <p class="k">뿌리</p>
@@ -878,23 +846,35 @@ var io1=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isInt
   (function s(now){var k=Math.min(1,(now-t0)/900);k=1-Math.pow(1-k,3);d.innerHTML=Math.round(from+(to-from)*k)+sm;if(k<1)requestAnimationFrame(s)})(t0)})},{threshold:.6});
 document.querySelectorAll("[data-count]").forEach(function(d){io1.observe(d)});
 
-/* 나무: 구간이 화면에 들어온 만큼 뿌리 → 줄기·잎 → 열매 */
+/* 나무: 실제처럼 만든 영상을 장면 80장으로 나눠, 화면을 내린 만큼 넘겨 보여 줌 */
 (function(){
   var sec=document.querySelector(".tree-grid"),stages=[].slice.call(document.querySelectorAll(".stage"));
-  var roots=[].slice.call(document.querySelectorAll("#roots path")),trunk=[].slice.call(document.querySelectorAll("#trunk path"));
-  var leaves=document.querySelectorAll(".leaf"),fruits=document.querySelectorAll(".fruit");
-  roots.concat(trunk).forEach(function(p){var L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=reduce?0:L;p._L=L});
-  function draw(arr,k){arr.forEach(function(p){p.style.strokeDashoffset=p._L*(1-Math.max(0,Math.min(1,k)))})}
+  var cv=document.getElementById("treecv"),cx=cv.getContext("2d"),N=80,fr=[],want=0,cur=-1,shown=-1,started=false,raf=0;
+  function src(i){return"img/tree/f"+("00"+(i+1)).slice(-3)+".jpg"}
+  function load(i){if(fr[i])return;var im=new Image();im.decoding="async";im.onload=function(){im._ok=true;tick()};im.src=src(i);fr[i]=im}
+  function start(){if(started)return;started=true;
+    /* 듬성듬성 먼저 받아 바로 움직이게 하고, 사이 장면을 채움 */
+    [8,4,2,1].forEach(function(st){for(var i=0;i<N;i+=st)load(i)});load(N-1)}
+  function nearest(i){for(var d=0;d<N;d++){if(fr[i-d]&&fr[i-d]._ok)return i-d;if(fr[i+d]&&fr[i+d]._ok)return i+d}return-1}
+  function draw(){
+    raf=0;if(cur<0)cur=want;
+    cur+=(want-cur)*.22;if(Math.abs(want-cur)<.05)cur=want;
+    var k=nearest(Math.round(cur));
+    if(k>=0&&k!==shown){cx.drawImage(fr[k],0,0,cv.width,cv.height);shown=k}
+    if(cur!==want)tick();
+  }
+  function tick(){if(!raf)raf=requestAnimationFrame(draw)}
   function on(){
     var vh=innerHeight,mid=vh*.55,now=0;
     stages.forEach(function(s,i){if(s.getBoundingClientRect().top<mid)now=i});
     stages.forEach(function(s,i){s.classList.toggle("now",i===now)});
-    var r=sec.getBoundingClientRect(),p=(vh*.75-r.top)/(r.height-vh*.2);p=Math.max(0,Math.min(1,p));
-    if(reduce)p=1;
-    draw(roots,p/.3);draw(trunk,(p-.25)/.35);
-    leaves.forEach(function(l,i){l.classList.toggle("in",p>.48+i*.012)});
-    fruits.forEach(function(f,i){f.classList.toggle("in",p>.72+i*.03)});
+    var r=sec.getBoundingClientRect();
+    if(r.top<vh*2.5&&r.bottom>-vh)start();
+    var p=(vh*.5-r.top)/(r.height-vh*.55);p=Math.max(0,Math.min(1,p));
+    if(reduce){p=1;cur=N-1}
+    want=p*(N-1);tick();
   }
+  load(0);if(reduce)load(N-1);
   addEventListener("scroll",on,{passive:true});addEventListener("resize",on);on();
 })();
 
