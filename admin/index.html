@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>사과나무치과그룹 관리자 (시안)</title>
+<meta name="description" content="사과나무치과그룹 홈페이지 관리자 시안입니다. 지점별로 보낸 건수, 지점 정보, 소식, 연혁, 채용, 방문 분석 화면을 볼 수 있습니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="사과나무치과그룹 관리자 시안">
+<meta property="og:description" content="지점별로 보낸 건수와 월 보고서, 지점 정보·소식·연혁 고치기 화면입니다.">
+<meta property="og:image" content="https://kkwon91.github.io/appletreegroup-demo/img/og.jpg">
+<meta property="og:url" content="https://kkwon91.github.io/appletreegroup-demo/admin/">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--ink:#13232C;--ink2:#44545E;--ink3:#6A7A84;--line:#DDE3E7;--wash:#F3F6F8;--green:#98CA3A;--green-d:#4C7A12;--blue:#0195DA;--blue-d:#0A6FA6;--side:#13232C;--on:#EEF3F6;--on2:#A9BAC4;--err:#A3341F}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,"Malgun Gothic",sans-serif;font-size:15px;line-height:1.6;word-break:keep-all;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,ol,dl,dd,figure{margin:0}ul,ol{list-style:none;padding:0}
+a{color:inherit}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* 로그인 */
+.login{min-height:100vh;display:grid;grid-template-columns:minmax(0,480px) 1fr}
+.login-p{padding:56px 48px;display:flex;flex-direction:column;justify-content:center}
+.login-p img{width:230px;height:auto}
+.login-p h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-top:40px}
+.login-p .lead{margin-top:10px;color:var(--ink2)}
+.login-p .acts{display:grid;gap:10px;margin-top:28px}
+.login-p .small{margin-top:22px;font-size:14px;color:var(--ink3)}
+.login-ph{background:var(--ink);position:relative;overflow:hidden}
+.login-ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-weight:700;border-radius:2px;text-decoration:none}
+.btn.line{background:#fff;color:var(--ink)}.btn.sm{min-height:36px;padding:0 12px;font-size:14px}
+.btn:hover{background:#000}.btn.line:hover{background:var(--wash)}
+.btn.lg{min-height:52px;font-size:16px;justify-content:space-between}
+.btn.lg small{font-weight:500;opacity:.75;font-size:14px}
+
+/* 틀 */
+.app{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);color:var(--on);position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+.side-logo{background:#fff;padding:18px 20px;display:block}
+.side-logo img{width:170px;height:auto;display:block}
+.side-who{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.12);font-size:14px;color:var(--on2)}
+.side-who b{display:block;color:#fff;font-size:15px}
+.nav{padding:8px 0 24px;flex:1}
+.nav p{padding:18px 20px 6px;font-size:13.5px;font-weight:600;color:var(--on2)}
+.nav a{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 20px;text-decoration:none;font-weight:500;border-left:3px solid transparent}
+.nav a:hover{background:rgba(255,255,255,.06)}
+.nav a[aria-current=page]{background:rgba(255,255,255,.1);border-left-color:var(--green);font-weight:700;color:#fff}
+.nav a span{font-size:13.5px;color:var(--on2)}
+.side-foot{padding:16px 20px;border-top:1px solid rgba(255,255,255,.12);display:grid;gap:8px}
+.side-foot a,.side-foot button{color:var(--on);background:none;border:1px solid rgba(255,255,255,.3);border-radius:2px;min-height:40px;text-decoration:none;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px}
+.side-foot a:hover,.side-foot button:hover{border-color:#fff}
+.main{min-width:0}
+.demo{background:var(--wash);border-bottom:1px solid var(--line);padding:10px 32px;font-size:14px;color:var(--ink2)}
+.demo b{color:var(--ink)}
+.top{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;padding:32px 32px 0}
+.top h1{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.top p{color:var(--ink2);margin-top:4px;max-width:44em}
+.top .acts{display:flex;gap:8px;flex-wrap:wrap}
+.body{padding:24px 32px 80px}
+.sec{margin-top:36px}.sec:first-child{margin-top:0}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:8px}
+.sec-h h2{font-size:19px;font-weight:800}
+.sec-h span,.sec-h a{font-size:14px;color:var(--ink3)}
+.tag{display:inline-block;font-size:13.5px;font-weight:700;border:1px solid var(--ink3);color:var(--ink2);padding:0 6px;border-radius:2px;line-height:1.5;vertical-align:middle;margin-left:6px}
+.tag.real{border-color:var(--green-d);color:var(--green-d)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line)}
+.tiles div{padding:16px 16px 18px 0}
+.tiles dt{font-size:14px;color:var(--ink3);font-weight:600}
+.tiles dd{font-size:38px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+.tiles dd small{font-size:15px;font-weight:700;margin-left:3px;letter-spacing:0}
+.tiles .d{font-size:14px;color:var(--ink2)}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}
+.two>*,.split>*{min-width:0}
+.bars li{display:grid;grid-template-columns:120px 1fr 56px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.bars i{display:block;height:14px;background:var(--ink2);transform-origin:left;animation:grow .7s cubic-bezier(.2,.8,.2,1) both}
+.bars li:first-child i{background:var(--green-d)}
+.bars b{text-align:right}
+@keyframes grow{from{transform:scaleX(0)}}
+.tbl th{text-align:left;font-size:14px;color:var(--ink3);font-weight:600;padding:10px 10px 10px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
+.tbl td{padding:11px 10px 11px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th.r,.tbl td.r{text-align:right;padding-right:0;padding-left:10px}
+.tbl th button{background:none;border:0;padding:0;font-weight:600;color:inherit}
+.tbl th button[aria-sort]{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.tbl tr.me td{background:var(--wash)}
+.tbl .sub{display:block;font-size:14px;color:var(--ink3)}
+.up{color:var(--green-d);font-weight:700}.down{color:var(--err);font-weight:700}
+.scroll{overflow-x:auto}
+.todo li{display:grid;grid-template-columns:1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.todo span{color:var(--ink2);font-size:14px;display:block}
+.empty{padding:28px 0;color:var(--ink3);border-bottom:1px solid var(--line)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.filters select,.filters input,.f input,.f select,.f textarea{min-height:42px;border:1px solid #B9C4CB;border-radius:2px;padding:0 10px;background:#fff}
+.f textarea{padding:10px;min-height:88px;width:100%}
+.f{display:grid;gap:14px;max-width:640px}
+.f label{display:grid;gap:5px;font-weight:600;font-size:14px}
+.f input,.f select{width:100%}
+.f .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f .hint{font-weight:400;color:var(--ink3)}
+.saved{color:var(--green-d);font-weight:700;font-size:14px}
+.split{display:grid;grid-template-columns:300px minmax(0,1fr);gap:36px;align-items:start}
+.pick{max-height:70vh;overflow:auto;border:1px solid var(--line)}
+.pick button{display:flex;justify-content:space-between;gap:8px;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid var(--line);padding:11px 12px}
+.pick button[aria-pressed=true]{background:var(--ink);color:#fff}
+.pick span{font-size:13.5px;opacity:.75}
+.bph{width:100%;max-width:300px;aspect-ratio:270/186;object-fit:cover;background:var(--wash);border:1px solid var(--line)}
+pre{background:var(--ink);color:#DDE8EE;padding:16px;overflow:auto;font-size:13.5px;line-height:1.55;max-height:420px;margin:0;border-radius:2px}
+.chk li{display:grid;grid-template-columns:1fr 110px 110px;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.chk li.h{font-size:14px;color:var(--ink3);font-weight:600;border-bottom-color:var(--ink)}
+.no{color:var(--err);font-weight:700}.yes{color:var(--green-d);font-weight:700}
+
+/* 월 보고서 한 장 */
+.sheet{border:1px solid var(--ink);padding:36px 40px;max-width:820px}
+.sheet img{width:190px;height:auto}
+.sheet h2{font-size:26px;font-weight:800;letter-spacing:-.02em;margin-top:22px}
+.sheet .to{color:var(--ink2);margin-top:4px}
+.sheet .big{display:grid;grid-template-columns:repeat(3,1fr);margin-top:26px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+.sheet .big div{padding:14px 0 16px}
+.sheet .big dt{font-size:14px;color:var(--ink3);font-weight:600}
+.sheet .big dd{font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.sheet .big dd small{font-size:16px;margin-left:3px;letter-spacing:0}
+.sheet h3{font-size:16px;font-weight:800;margin-top:26px}
+.spark{width:100%;height:120px;display:block;margin-top:10px}
+.sheet .note{margin-top:22px;font-size:14px;color:var(--ink3)}
+.sheet ul.say li{padding:8px 0;border-bottom:1px solid var(--line)}
+
+@media (max-width:960px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto}
+  .side-logo{padding:12px 16px}.side-logo img{width:140px}
+  .side-who{display:none}
+  .nav{display:flex;overflow-x:auto;padding:0;white-space:nowrap}
+  .nav p{display:none}
+  .nav a{border-left:0;border-bottom:3px solid transparent;padding:12px 14px}
+  .nav a[aria-current=page]{border-bottom-color:var(--green)}
+  .nav a span{display:none}
+  .side-foot{grid-template-columns:1fr 1fr 1fr;padding:10px 16px}
+  .top,.body{padding-left:16px;padding-right:16px}.top{padding-top:24px}
+  .demo{padding:10px 16px}
+  .tiles{grid-template-columns:1fr 1fr}
+  .two,.split{grid-template-columns:1fr;gap:28px}
+  .pick{max-height:220px}
+  .login{grid-template-columns:1fr}.login-ph{display:none}.login-p{padding:40px 20px}
+  .sheet{padding:24px 18px}.sheet .big dd{font-size:32px}
+  .bars li{grid-template-columns:92px 1fr 48px}
+  .f .row{grid-template-columns:1fr}
+}
+@media print{
+  .side,.demo,.top,.noprint{display:none!important}
+  .app{display:block}.body{padding:0}.sheet{border:0;padding:0;max-width:none}
+}
+@media (prefers-reduced-motion:reduce){.bars i{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="login" id="login">
+  <main class="login-p">
+    <a href="../"><img src="../img/logo.png" alt="희망을 심는 사과나무치과그룹 — 홈페이지로 가기" width="687" height="136"></a>
+    <h1>관리자 시안</h1>
+    <p class="lead">그룹 홈페이지가 지점마다 환자를 얼마나 보냈는지 보고, 지점 정보와 소식을 고치는 화면입니다. 시안이라 비밀번호 없이 들어갑니다.</p>
+    <div class="acts">
+      <button class="btn lg" type="button" data-role="group">그룹 관리자로 보기 <small>26개 지점 전체</small></button>
+      <button class="btn lg line" type="button" data-role="branch">지점 담당자로 보기 <small>부천 지점만</small></button>
+    </div>
+    <p class="small">실제로 쓸 때는 지점마다 계정을 따로 드리고, 지점 담당자는 자기 지점만 고칩니다. 서버는 부천 병원 관리자와 같은 사내 운영 서버를 씁니다.</p>
+    <p class="small"><a href="../">홈페이지 초안으로 돌아가기</a></p>
+  </main>
+  <figure class="login-ph" aria-hidden="true"><img src="../img/video_bg.png" alt=""></figure>
+</div>
+
+<div class="app" id="app" hidden>
+  <aside class="side">
+    <a class="side-logo" href="#/dashboard"><img src="../img/logo.png" alt="사과나무치과그룹 관리자" width="687" height="136"></a>
+    <div class="side-who"><b id="who"></b><span id="who2"></span></div>
+    <nav class="nav" id="nav" aria-label="관리자 메뉴"></nav>
+    <div class="side-foot">
+      <a href="../" target="_blank" rel="noopener">홈페이지 보기</a>
+      <button type="button" id="swap"></button>
+      <button type="button" id="out">나가기</button>
+    </div>
+  </aside>
+  <div class="main">
+    <p class="demo"><b>시안 화면입니다.</b> ‘예시’라고 붙은 숫자는 화면을 보여 드리려고 넣은 것이고 실제 기록이 아닙니다. ‘실제’라고 붙은 것은 이 브라우저에서 방금 일어난 일입니다. 여기서 고친 내용은 이 브라우저에만 저장됩니다.</p>
+    <div class="top" id="top"></div>
+    <div class="body" id="view"></div>
+  </div>
+</div>
+
+<script src="../data.js"></script>
+<script src="../history.js"></script>
+<script>
+/* ── 자료 ── */
+var B=window.ATG_BRANCHES.map(function(a,i){return{i:i,s:a[0],name:a[1],addr:a[2],tel:a[3],url:a[4],img:a[5],r:a[8]}});
+var REG={seoul:"서울",gg:"경기·인천",mid:"강원·충청",south:"대구·부산"};
+var ME=11; /* 지점 담당자로 볼 때의 지점 = 부천 */
+var S={};try{S=JSON.parse(localStorage.getItem("atg_admin"))||{}}catch(e){}
+S.branches=S.branches||{};S.notice=S.notice||{on:false,text:""};S.news=S.news||[];S.history=S.history||[];S.jobs=S.jobs||[];
+function save(){try{localStorage.setItem("atg_admin",JSON.stringify(S))}catch(e){}}
+B.forEach(function(b){var o=S.branches[b.i];if(o)["addr","tel","url","hours"].forEach(function(k){if(typeof o[k]==="string")b[k]=o[k]})});
+function esc(t){return String(t==null?"":t).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function kind(u){return /naver\.me/.test(u)?"네이버 플레이스":/blog\.naver/.test(u)?"블로그":"홈페이지"}
+function own(b){return kind(b.url)==="홈페이지"&&b.addr}
+/* 예시 숫자: 지점 번호로 정해지는 값(새로 고쳐도 같음). 실제 기록이 아님 */
+var MON=["6월","7월","8월","9월","10월","11월"],WAVE=[.72,.8,.77,.9,.94,1];
+function ex(b,m){if(!b.addr)return{tel:0,web:0,map:0,sum:0};var k=WAVE[m==null?5:m]*(1+((b.i*7+(m==null?5:m)*3)%5-2)*.03);
+  var t=Math.round((18+b.i*37%41)*k),w=Math.round((40+b.i*53%97)*k),g=Math.round((9+b.i*29%23)*k);return{tel:t,web:w,map:g,sum:t+w+g}}
+var NEWS0=[["학술세미나","사과나무치과그룹, 2026년 상반기 정기총회 및 STM 외부강연 개최","2026.07.31"],["언론기사","사과나무치과병원, 어르신 일자리 안전 위한 ‘구강 관리 특별 교육’ 성료","2025.08.26"],["사회공헌","이상훈 사과나무치과의원 원장, 밀알복지재단 ‘컴패니언클럽’ 40호 위촉","2025.08.26"],["사회공헌","이웃사랑 실천 플리마켓 연 사과나무치과병원 봉사동아리 ‘핫플’","2025.08.26"],["공지사항","사과나무치과는 제로페이 가맹점입니다. 지역사랑상품권 사용 가능합니다.","2025.08.26"]];
+var role=sessionStorage.getItem("atg_role")||"";
+function mine(){return role==="branch"?[B[ME]]:B}
+
+/* ── 메뉴 ── */
+var MENU=[["운영",[["dashboard","대시보드"],["send","지점 보내기 현황"],["report","월 보고서"]]],
+  ["콘텐츠",[["branches","지점 정보"],["notice","공지 띠"],["news","소식"],["history","연혁"],["jobs","채용"]]],
+  ["분석",[["visits","방문 분석"],["aeo","AI 검색 자료"]]],
+  ["설정",[["accounts","계정"]]]];
+var GROUP_ONLY={notice:1,news:1,history:1,jobs:1,visits:1,aeo:1,accounts:1};
+function drawNav(cur){
+  document.getElementById("nav").innerHTML=MENU.map(function(g){
+    var it=g[1].filter(function(x){return role==="group"||!GROUP_ONLY[x[0]]});
+    return it.length?"<p>"+g[0]+"</p>"+it.map(function(x){return'<a href="#/'+x[0]+'"'+(x[0]===cur?' aria-current="page"':'')+'>'+x[1]+'</a>'}).join(""):""}).join("");
+  document.getElementById("who").textContent=role==="group"?"그룹 관리자":"부천 지점 담당자";
+  document.getElementById("who2").textContent=role==="group"?"26개 지점 전체를 봅니다":"부천사과나무치과만 봅니다";
+  document.getElementById("swap").textContent=role==="group"?"지점 담당자로":"그룹 관리자로";
+}
+function head(t,p,acts){document.getElementById("top").innerHTML="<div><h1>"+t+"</h1>"+(p?"<p>"+p+"</p>":"")+"</div>"+(acts?'<div class="acts noprint">'+acts+"</div>":"")}
+var EX='<span class="tag">예시</span>',REAL='<span class="tag real">실제</span>';
+function bars(rows){var mx=Math.max.apply(0,rows.map(function(r){return r[1]}))||1;
+  return'<ul class="bars">'+rows.map(function(r,i){return"<li><span>"+esc(r[0])+'</span><i style="width:'+Math.max(2,r[1]/mx*100)+"%;animation-delay:"+i*50+'ms"></i><b class="num">'+r[1].toLocaleString()+"</b></li>"}).join("")+"</ul>"}
+function clicks(){try{return JSON.parse(localStorage.getItem("atg_clicks"))||[]}catch(e){return[]}}
+function hhmm(t){var d=new Date(t);return(d.getMonth()+1)+"월 "+d.getDate()+"일 "+("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2)}
+
+/* ── 화면 ── */
+var V={};
+V.dashboard=function(){
+  var list=mine(),tot={tel:0,web:0,map:0,sum:0},prev=0;
+  list.forEach(function(b){var e=ex(b);tot.tel+=e.tel;tot.web+=e.web;tot.map+=e.map;tot.sum+=e.sum;prev+=ex(b,4).sum});
+  var diff=Math.round((tot.sum-prev)/prev*100);
+  head("대시보드",role==="group"?"그룹 홈페이지가 이번 달 26개 지점으로 보낸 방문입니다.":"그룹 홈페이지가 이번 달 부천 지점으로 보낸 방문입니다.",'<a class="btn line sm" href="#/report">월 보고서 보기</a>');
+  var ck=clicks().filter(function(c){return role==="group"||c.i===ME}).slice(-8).reverse();
+  var top=B.slice().sort(function(a,b){return ex(b).sum-ex(a).sum}).slice(0,6).map(function(b){return[b.s,ex(b).sum]});
+  var todo=[["화이트 지점의 주소와 전화가 없습니다","지금 홈페이지 지점 목록에 없고 whiteapple.kr 이 열리지 않습니다.","branches"],
+    ["자기 홈페이지가 없는 지점이 9곳입니다","네이버 플레이스나 블로그로 넘어갑니다. 그룹 주소 아래 지점 안내 쪽을 만들 대상입니다.","send"],
+    ["평택과 안중, 이름을 하나로 정해야 합니다","메뉴에는 평택, 지점 이름은 안중사과나무치과로 적혀 있습니다.","branches"],
+    ["진료시간이 26곳 모두 비어 있습니다","지점에서 받아 넣으면 홈페이지와 AI 검색 자료에 같이 들어갑니다.","branches"]];
+  return'<section class="sec"><div class="sec-h"><h2>11월 보낸 건수'+EX+'</h2><span>전화 누름 + 지점 홈페이지 이동 + 길찾기</span></div>'+
+    '<dl class="tiles"><div><dt>모두</dt><dd class="num">'+tot.sum.toLocaleString()+'<small>건</small></dd><p class="d">10월보다 <span class="'+(diff>=0?"up":"down")+'">'+(diff>=0?"+":"")+diff+'%</span></p></div>'+
+    '<div><dt>전화 누름</dt><dd class="num">'+tot.tel.toLocaleString()+'<small>건</small></dd></div><div><dt>지점 홈페이지 이동</dt><dd class="num">'+tot.web.toLocaleString()+'<small>건</small></dd></div><div><dt>길찾기</dt><dd class="num">'+tot.map.toLocaleString()+'<small>건</small></dd></div></dl></section>'+
+    '<div class="two sec">'+(role==="group"?'<section><div class="sec-h"><h2>많이 보낸 지점'+EX+'</h2><a href="#/send">26곳 모두 보기</a></div>'+bars(top)+'</section>':
+      '<section><div class="sec-h"><h2>여섯 달 흐름'+EX+'</h2><span>부천</span></div>'+bars(MON.map(function(m,i){return[m,ex(B[ME],i).sum]}))+'</section>')+
+    '<section><div class="sec-h"><h2>방금 누른 기록'+REAL+'</h2><span>이 브라우저에서</span></div>'+
+    (ck.length?'<div class="scroll"><table class="tbl"><thead><tr><th>언제</th><th>지점</th><th>무엇을</th></tr></thead><tbody>'+ck.map(function(c){return"<tr><td>"+hhmm(c.t)+"</td><td>"+esc(B[c.i]?B[c.i].name:"")+"</td><td>"+(c.k==="tel"?"전화 누름":"지점 홈페이지 이동")+"</td></tr>"}).join("")+'</tbody></table></div><p style="margin-top:12px"><button class="btn line sm" type="button" data-act="clear-clicks">기록 지우기</button></p>'
+      :'<p class="empty">아직 없습니다. <a href="../#find" target="_blank" rel="noopener">홈페이지 초안</a>에서 지점 전화나 홈페이지 링크를 눌러 보고 이 화면을 새로 고치면 여기에 나옵니다.</p>')+'</section></div>'+
+    (role==="group"?'<section class="sec"><div class="sec-h"><h2>확인할 것'+REAL+'</h2><span>지금 홈페이지를 읽어 찾은 것</span></div><ul class="todo">'+todo.map(function(t){return"<li><div><b>"+t[0]+"</b><span>"+t[1]+'</span></div><a class="btn line sm" href="#/'+t[2]+'">보기</a></li>'}).join("")+"</ul></section>":"");
+};
+var sortK="sum",regF="";
+V.send=function(){
+  head("지점 보내기 현황","그룹 홈페이지에서 지점 전화를 누르거나, 지점 홈페이지·길찾기로 넘어간 횟수입니다. 달마다 지점 원장님께 숫자로 보여 드립니다.",'<button class="btn line sm" type="button" data-act="csv">엑셀로 받기</button>');
+  var rows=mine().filter(function(b){return!regF||b.r===regF}).map(function(b){var e=ex(b),p=ex(b,4).sum;return{b:b,e:e,d:p?Math.round((e.sum-p)/p*100):0}});
+  rows.sort(function(a,b){return sortK==="name"?a.b.name.localeCompare(b.b.name,"ko"):b.e[sortK]-a.e[sortK]});
+  function th(k,t){return'<th class="r"><button type="button" data-sort="'+k+'"'+(sortK===k?' aria-sort="descending"':'')+">"+t+"</button></th>"}
+  return(role==="group"?'<div class="filters"><label>지역 <select id="regf"><option value="">전체 26곳</option>'+Object.keys(REG).map(function(k){return'<option value="'+k+'"'+(regF===k?" selected":"")+">"+REG[k]+"</option>"}).join("")+"</select></label></div>":"")+
+    '<section><div class="sec-h"><h2>2026년 11월'+EX+'</h2><span>제목을 누르면 그 순서로 정렬됩니다</span></div><div class="scroll"><table class="tbl"><thead><tr><th><button type="button" data-sort="name"'+(sortK==="name"?' aria-sort="ascending"':'')+'>지점</button></th><th>넘어가는 곳</th>'+th("tel","전화 누름")+th("web","홈페이지 이동")+th("map","길찾기")+th("sum","모두")+'<th class="r">10월 대비</th></tr></thead><tbody>'+
+    rows.map(function(r){var b=r.b;return'<tr'+(b.i===ME&&role==="group"?' class="me"':'')+"><td><b>"+esc(b.name)+'</b><span class="sub">'+REG[b.r]+"</span></td><td>"+(b.addr?kind(b.url):"주소 확인 전")+'</td><td class="r">'+r.e.tel+'</td><td class="r">'+r.e.web+'</td><td class="r">'+r.e.map+'</td><td class="r"><b>'+r.e.sum+'</b></td><td class="r">'+(b.addr?'<span class="'+(r.d>=0?"up":"down")+'">'+(r.d>=0?"+":"")+r.d+"%</span>":"–")+"</td></tr>"}).join("")+"</tbody></table></div></section>";
+};
+var repB=ME;
+V.report=function(){
+  if(role==="branch")repB=ME;var b=B[repB],e=ex(b),p=ex(b,4),pts=MON.map(function(m,i){return ex(b,i).sum}),mx=Math.max.apply(0,pts)||1;
+  head("월 보고서","지점 원장님께 달마다 보내는 한 장입니다. 인쇄하거나 PDF 로 저장해 카톡으로 보냅니다.",'<button class="btn sm" type="button" data-act="print">인쇄·PDF 저장</button>');
+  var xy=pts.map(function(v,i){return(20+i*112)+","+(100-v/mx*80)});
+  var rank=B.slice().sort(function(a,c){return ex(c).sum-ex(a).sum}).indexOf(b)+1;
+  return(role==="group"?'<div class="filters noprint"><label>지점 <select id="repb">'+B.filter(function(x){return x.addr}).map(function(x){return'<option value="'+x.i+'"'+(x.i===repB?" selected":"")+">"+esc(x.name)+"</option>"}).join("")+"</select></label></div>":"")+
+    '<article class="sheet"><img src="../img/logo.png" alt="사과나무치과그룹" width="687" height="136"><h2>2026년 11월 그룹 홈페이지 보고'+EX+'</h2><p class="to">'+esc(b.name)+" 원장님께</p>"+
+    '<dl class="big"><div><dt>전화 누름</dt><dd class="num">'+e.tel+'<small>건</small></dd></div><div><dt>'+kind(b.url)+' 이동</dt><dd class="num">'+e.web+'<small>건</small></dd></div><div><dt>길찾기</dt><dd class="num">'+e.map+"<small>건</small></dd></div></dl>"+
+    "<h3>여섯 달 흐름</h3>"+'<svg class="spark" viewBox="0 0 600 130" role="img" aria-label="여섯 달 동안 보낸 건수"><polyline points="'+xy.join(" ")+'" fill="none" stroke="#13232C" stroke-width="2.5"/>'+pts.map(function(v,i){var c=xy[i].split(",");return'<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+(i===5?5:3.5)+'" fill="'+(i===5?"#4C7A12":"#13232C")+'"/><text x="'+c[0]+'" y="'+(c[1]-10)+'" text-anchor="middle" font-size="13.5" font-weight="700" fill="#13232C">'+v+'</text><text x="'+c[0]+'" y="126" text-anchor="middle" font-size="13.5" fill="#6A7A84">'+MON[i]+"</text>"}).join("")+"</svg>"+
+    '<h3>이번 달 한눈에</h3><ul class="say"><li>그룹 홈페이지에서 '+esc(b.s)+" 지점으로 모두 <b>"+e.sum+"건</b>을 보냈습니다. 10월은 "+p.sum+"건이었습니다.</li><li>26개 지점 가운데 <b>"+rank+"번째</b>로 많습니다.</li><li>"+(own(b)?"지점 홈페이지로 넘어간 뒤의 예약·상담은 지점 홈페이지 기록에서 이어 봅니다.":"이 지점은 자기 홈페이지가 없어 "+kind(b.url)+"로 넘어갑니다. 그룹 주소 아래 지점 안내 쪽을 만들면 전화와 길찾기를 그 쪽에서 바로 받습니다.")+"</li></ul>"+
+    '<p class="note">세는 방법: 그룹 홈페이지에서 이 지점의 전화번호, 홈페이지 링크, 길찾기를 누른 횟수입니다. 같은 사람이 여러 번 누르면 여러 번으로 셉니다.</p></article>';
+};
+var edB=0;
+V.branches=function(){
+  if(role==="branch")edB=ME;var b=B[edB];
+  head("지점 정보","주소·전화·링크·진료시간을 고칩니다. 저장하면 홈페이지 지점 찾기와 AI 검색 자료에 같이 반영됩니다.");
+  var list=mine();
+  return'<div class="split">'+(role==="group"?'<div class="pick" role="group" aria-label="지점 고르기">'+list.map(function(x){return'<button type="button" data-edit="'+x.i+'" aria-pressed="'+(x.i===edB)+'">'+esc(x.name)+"<span>"+(x.addr?(S.branches[x.i]?"고침":""):"주소 없음")+"</span></button>"}).join("")+"</div>":"<div>"+(b.img?'<img class="bph" src="../img/b'+b.img+'.jpg" alt="'+esc(b.name)+' 내부" width="270" height="186">':"")+"</div>")+
+    '<form class="f" id="bform"><div class="sec-h"><h2>'+esc(b.name)+"</h2><span>"+REG[b.r]+"</span></div>"+
+    (role==="group"&&b.img?'<img class="bph" src="../img/b'+b.img+'.jpg" alt="'+esc(b.name)+' 내부" width="270" height="186">':"")+
+    '<label>주소<input name="addr" value="'+esc(b.addr)+'" placeholder="지점에 확인한 뒤 넣습니다"></label>'+
+    '<div class="row"><label>전화<input name="tel" value="'+esc(b.tel)+'" inputmode="tel"></label><label>넘어가는 곳 <span class="hint">지금: '+kind(b.url)+'</span><input name="url" value="'+esc(b.url)+'" inputmode="url"></label></div>'+
+    '<label>진료시간 <span class="hint">아직 받지 못했습니다. 예: 평일 09:30–18:30, 토 09:30–14:00, 일 휴진</span><textarea name="hours">'+esc(b.hours||"")+"</textarea></label>"+
+    '<p><button class="btn" type="submit">저장</button> <span class="saved" id="saved" role="status"></span></p>'+
+    '<p class="hint">시안에서는 이 브라우저에만 저장됩니다. 저장한 뒤 <a href="../#find" target="_blank" rel="noopener">홈페이지 초안</a>을 새로 고치면 지점 목록에 바뀐 주소·전화가 보입니다.</p></form></div>';
+};
+V.notice=function(){
+  head("공지 띠","홈페이지 맨 위에 한 줄로 띄우는 알림입니다. 명절 휴진, 지점 개원 같은 소식에 씁니다.");
+  return'<form class="f" id="nform"><label>알림 글<input name="text" maxlength="60" value="'+esc(S.notice.text)+'" placeholder="예: 설 연휴 진료 일정은 지점마다 다릅니다. 가려는 지점에 확인해 주세요."></label>'+
+    '<label style="display:flex;gap:8px;align-items:center;font-weight:600"><input type="checkbox" name="on" style="width:20px;height:20px;min-height:0"'+(S.notice.on?" checked":"")+'> 홈페이지에 띄우기</label>'+
+    '<p><button class="btn" type="submit">저장</button> <span class="saved" id="saved" role="status"></span></p><p class="hint">저장한 뒤 <a href="../" target="_blank" rel="noopener">홈페이지 초안</a>을 새로 고치면 로고 위에 초록 띠로 나옵니다.</p></form>';
+};
+V.news=function(){
+  head("소식","학술세미나, 사회공헌, 언론기사, 공지사항을 올립니다. 새 글은 홈페이지 ‘그룹 소식’ 맨 위에 붙습니다.");
+  var all=S.news.map(function(x,i){return[x.cat,x.title,x.date,i]}).concat(NEWS0);
+  return'<div class="two"><section><div class="sec-h"><h2>올라간 글</h2><span>'+all.length+'건</span></div><div class="scroll"><table class="tbl"><thead><tr><th>갈래</th><th>제목</th><th>날짜</th><th></th></tr></thead><tbody>'+
+    all.map(function(x){return"<tr><td>"+esc(x[0])+"</td><td>"+esc(x[1])+"</td><td>"+esc(x[2])+"</td><td>"+(x[3]!=null?'<button class="btn line sm" type="button" data-delnews="'+x[3]+'">지우기</button>':"")+"</td></tr>"}).join("")+"</tbody></table></div></section>"+
+    '<form class="f" id="newsform"><div class="sec-h"><h2>새 글</h2></div><div class="row"><label>갈래<select name="cat"><option>학술세미나</option><option>사회공헌</option><option>언론기사</option><option>공지사항</option></select></label><label>날짜<input name="date" type="date" required></label></div><label>제목<input name="title" required maxlength="80"></label><label>원문 링크 <span class="hint">없으면 비워 둡니다</span><input name="url" inputmode="url" placeholder="https://"></label><p><button class="btn" type="submit">올리기</button> <span class="saved" id="saved" role="status"></span></p></form></div>';
+};
+V.history=function(){
+  var H=window.ATG_HISTORY||[],N={s:"학술·연구",n:"나눔",g:"그룹"};
+  head("연혁","해마다 한 줄씩 더합니다. 지금 22개 해, "+H.reduce(function(a,h){return a+h.items.length},0)+"건이 들어 있습니다.");
+  return'<div class="two"><section><div class="sec-h"><h2>해마다 기록 수'+REAL+'</h2><span>지금 홈페이지 연혁 그대로</span></div>'+bars(H.map(function(h){return[h.y+"년",h.items.length+S.history.filter(function(x){return x.y===h.y}).length]}))+"</section>"+
+    '<div><form class="f" id="histform"><div class="sec-h"><h2>한 줄 더하기</h2></div><div class="row"><label>해<select name="y">'+H.map(function(h){return"<option>"+h.y+"</option>"}).join("")+'</select></label><label>갈래<select name="c"><option value="g">그룹</option><option value="s">학술·연구</option><option value="n">나눔</option></select></label></div><label>내용<input name="text" required maxlength="80"></label><p><button class="btn" type="submit">더하기</button> <span class="saved" id="saved" role="status"></span></p></form>'+
+    '<section class="sec"><div class="sec-h"><h2>여기서 더한 줄</h2><span>'+S.history.length+"건</span></div>"+(S.history.length?'<table class="tbl"><tbody>'+S.history.map(function(x,i){return"<tr><td>"+x.y+"</td><td>"+N[x.c]+"</td><td>"+esc(x.text)+'</td><td><button class="btn line sm" type="button" data-delhist="'+i+'">지우기</button></td></tr>'}).join("")+"</tbody></table>":'<p class="empty">아직 없습니다.</p>')+
+    '</section><p class="hint" style="margin-top:14px;color:var(--ink3)">확인할 것: 2014년과 2015년 내용이 똑같이 들어 있습니다.</p></div></div>';
+};
+V.jobs=function(){
+  head("채용","공고를 올리고, 들어온 지원서를 단계별로 봅니다. 단계는 홈페이지에 적힌 네 단계 그대로입니다.");
+  var st=["지원서 접수","서류전형","면접전형","최종 합격 안내"];
+  return'<section><div class="sec-h"><h2>지원서</h2><span>단계별</span></div><dl class="tiles">'+st.map(function(s){return"<div><dt>"+s+'</dt><dd class="num">0<small>건</small></dd></div>'}).join("")+'</dl><p class="empty">아직 받은 지원서가 없습니다. 실제로 쓸 때는 지원서의 이름·연락처가 사내 운영 서버에 저장되고, 채용이 끝나면 지웁니다.</p></section>'+
+    '<div class="two sec"><section><div class="sec-h"><h2>올린 공고</h2><span>'+S.jobs.length+"건</span></div>"+(S.jobs.length?'<table class="tbl"><thead><tr><th>지점</th><th>직무</th><th>마감</th><th></th></tr></thead><tbody>'+S.jobs.map(function(j,i){return"<tr><td>"+esc(j.b)+"</td><td>"+esc(j.title)+"</td><td>"+esc(j.end)+'</td><td><button class="btn line sm" type="button" data-deljob="'+i+'">내리기</button></td></tr>'}).join("")+"</tbody></table>":'<p class="empty">올린 공고가 없습니다.</p>')+"</section>"+
+    '<form class="f" id="jobform"><div class="sec-h"><h2>새 공고</h2></div><div class="row"><label>지점<select name="b"><option>그룹 공통</option>'+B.map(function(b){return"<option>"+esc(b.s)+"</option>"}).join("")+'</select></label><label>마감<input name="end" type="date" required></label></div><label>직무<input name="title" required maxlength="40" placeholder="예: 치과위생사"></label><p><button class="btn" type="submit">올리기</button> <span class="saved" id="saved" role="status"></span></p></form></div>';
+};
+V.visits=function(){
+  head("방문 분석","어디서 들어와서, 홈페이지를 어디까지 보고, 어느 지역 지점을 찾는지 봅니다.");
+  var sec=[["첫 화면",4180],["지점 찾기",3310],["사과나무 문장",2240],["자라는 나무",1870],["연혁",1260],["나눔",980],["소식·질문",760],["채용",540]];
+  var reg=Object.keys(REG).map(function(k){return[REG[k],B.filter(function(b){return b.r===k}).reduce(function(a,b){return a+ex(b).sum},0)]});
+  return'<div class="two"><section><div class="sec-h"><h2>구간별 도달'+EX+'</h2><span>11월 방문 수</span></div>'+bars(sec)+'</section><section><div class="sec-h"><h2>들어온 곳'+EX+'</h2><span>11월</span></div>'+bars([["네이버 검색",1920],["직접 입력",980],["구글 검색",610],["지점 홈페이지",420],["AI 검색",250]])+"</section></div>"+
+    '<div class="two sec"><section><div class="sec-h"><h2>많이 찾은 지역'+EX+'</h2><span>지역 탭을 누른 뒤 보낸 건수</span></div>'+bars(reg)+'</section><section><div class="sec-h"><h2>지점 찾기에 적은 말'+EX+'</h2><span>찾기 칸</span></div>'+bars([["일산",212],["부천",187],["강남",141],["부산",96],["임플란트",74]])+'<p style="margin-top:12px;font-size:14px;color:var(--ink3)">지점 이름이 아닌 말(예: 임플란트)이 많으면, 그 말로 찾을 수 있게 지점 정보에 진료 과목을 넣습니다.</p></section></div>';
+};
+V.aeo=function(){
+  head("AI 검색 자료","챗GPT·네이버 같은 AI 가 그룹과 지점을 읽어 갈 때 쓰는 자료입니다. 지점 정보에서 고치면 여기도 같이 바뀝니다.");
+  var ld={"@context":"https://schema.org","@type":"Organization","name":"사과나무치과그룹","alternateName":"Apple Tree Dental Group","foundingDate":"2003","url":"https://appletreegroup.co.kr/",
+    "subOrganization":B.filter(function(b){return b.addr}).map(function(b){var o={"@type":"Dentist","name":b.name,"address":b.addr,"telephone":b.tel,"url":b.url};if(b.hours)o.openingHours=b.hours;return o})};
+  var llms="# 사과나무치과그룹\n> 2003년에 결성된 치과 그룹. 2025년 7월 기준 전국 26개 지점, 치과의사 94명, 스태프 462명.\n\n## 지점\n"+B.map(function(b){return"- "+b.name+(b.addr?": "+b.addr+" / "+b.tel:": 주소 확인 전")}).join("\n");
+  var chk=[["사이트맵","없음(404)","만듦"],["기계가 읽는 조직·지점 자료(JSON-LD)","0개","그룹 1 + 지점 "+ld.subOrganization.length],["AI 용 요약 파일(llms.txt)","없음","만듦"],["지점별 안내 쪽","없음","26쪽 예정"],["질문과 답이 화면에 보임","없음","5개"]];
+  return'<section><div class="sec-h"><h2>지금 사이트와 새 사이트'+REAL+'</h2><span>지금 홈페이지를 읽어 확인</span></div><ul class="chk"><li class="h"><span>항목</span><span>지금</span><span>새 사이트</span></li>'+chk.map(function(c){return"<li><span>"+c[0]+'</span><span class="no">'+c[1]+'</span><span class="yes">'+c[2]+"</span></li>"}).join("")+"</ul></section>"+
+    '<div class="two sec"><section><div class="sec-h"><h2>조직·지점 자료'+REAL+'</h2><span>지점 '+ld.subOrganization.length+"곳</span></div><pre>"+esc(JSON.stringify(ld,null,1))+'</pre></section><section><div class="sec-h"><h2>AI 용 요약 파일'+REAL+"</h2><span>llms.txt</span></div><pre>"+esc(llms)+"</pre></section></div>";
+};
+V.accounts=function(){
+  head("계정","그룹 관리자는 모든 메뉴를, 지점 담당자는 자기 지점의 보내기 현황·월 보고서·지점 정보만 봅니다.");
+  return'<section><div class="sec-h"><h2>계정 27개</h2><span>모두 발급 전</span></div><div class="scroll"><table class="tbl"><thead><tr><th>구분</th><th>맡는 곳</th><th>볼 수 있는 메뉴</th><th>상태</th></tr></thead><tbody><tr><td><b>그룹 관리자</b></td><td>26개 지점 전체</td><td>모든 메뉴</td><td>발급 전</td></tr>'+
+    B.map(function(b){return"<tr><td>지점 담당자</td><td>"+esc(b.name)+"</td><td>보내기 현황 · 월 보고서 · 지점 정보</td><td>발급 전</td></tr>"}).join("")+"</tbody></table></div></section>";
+};
+
+/* ── 움직임 ── */
+function route(){
+  var r=(location.hash.replace(/^#\//,"")||"dashboard");if(!V[r]||(role!=="group"&&GROUP_ONLY[r]))r="dashboard";
+  drawNav(r);document.getElementById("view").innerHTML=V[r]();window.scrollTo(0,0);
+  var d=document.querySelector('#newsform [name=date],#jobform [name=end]');if(d&&!d.value)d.value=new Date().toISOString().slice(0,10);
+}
+function enter(r){role=r;sessionStorage.setItem("atg_role",r);document.getElementById("login").hidden=true;document.getElementById("app").hidden=false;route()}
+document.getElementById("login").addEventListener("click",function(e){var b=e.target.closest("[data-role]");if(b)enter(b.dataset.role)});
+document.getElementById("swap").addEventListener("click",function(){enter(role==="group"?"branch":"group")});
+document.getElementById("out").addEventListener("click",function(){sessionStorage.removeItem("atg_role");role="";document.getElementById("app").hidden=true;document.getElementById("login").hidden=false});
+addEventListener("hashchange",function(){if(role)route()});
+function said(t){var s=document.getElementById("saved");if(s)s.textContent=t}
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-sort],[data-edit],[data-act],[data-delnews],[data-delhist],[data-deljob]");if(!t)return;
+  if(t.dataset.sort){sortK=t.dataset.sort;route()}
+  else if(t.dataset.edit){edB=+t.dataset.edit;route()}
+  else if(t.dataset.delnews){S.news.splice(+t.dataset.delnews,1);save();route()}
+  else if(t.dataset.delhist){S.history.splice(+t.dataset.delhist,1);save();route()}
+  else if(t.dataset.deljob){S.jobs.splice(+t.dataset.deljob,1);save();route()}
+  else if(t.dataset.act==="print")window.print();
+  else if(t.dataset.act==="clear-clicks"){localStorage.removeItem("atg_clicks");route()}
+  else if(t.dataset.act==="csv"){
+    var rows=[["지점","지역","넘어가는 곳","전화 누름","홈페이지 이동","길찾기","모두","비고"]].concat(mine().map(function(b){var x=ex(b);return[b.name,REG[b.r],b.addr?kind(b.url):"주소 확인 전",x.tel,x.web,x.map,x.sum,"예시 숫자"]}));
+    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob(["﻿"+rows.map(function(r){return r.join(",")}).join("\n")],{type:"text/csv"}));a.download="사과나무치과그룹_보내기현황_예시.csv";a.click();URL.revokeObjectURL(a.href)}
+});
+document.addEventListener("change",function(e){
+  if(e.target.id==="regf"){regF=e.target.value;route()}
+  if(e.target.id==="repb"){repB=+e.target.value;route()}
+});
+document.addEventListener("submit",function(e){
+  e.preventDefault();var f=e.target,d={};[].forEach.call(f.elements,function(x){if(x.name)d[x.name]=x.type==="checkbox"?x.checked:x.value.trim()});
+  if(f.id==="bform"){S.branches[edB]={addr:d.addr,tel:d.tel,url:d.url,hours:d.hours};["addr","tel","url","hours"].forEach(function(k){B[edB][k]=d[k]});save();said("저장했습니다")}
+  else if(f.id==="nform"){S.notice={on:d.on,text:d.text};save();said("저장했습니다")}
+  else if(f.id==="newsform"){S.news.unshift({cat:d.cat,title:d.title,date:d.date.replace(/-/g,"."),url:d.url});save();route();said("올렸습니다")}
+  else if(f.id==="histform"){S.history.unshift({y:+d.y,c:d.c,text:d.text});save();route();said("더했습니다")}
+  else if(f.id==="jobform"){S.jobs.unshift({b:d.b,title:d.title,end:d.end.replace(/-/g,".")});save();route();said("올렸습니다")}
+});
+if(role)enter(role);
+</script>
+</body>
+</html>
